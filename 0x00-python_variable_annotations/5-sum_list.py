@@ -5,7 +5,7 @@ sum as a float.
 """
 
 
-def sum_list(input_list: list[float]) -> float:
+def sum_list(input_list: List[float]) -> float:
     """Return the sum of all floats given"""
     sum = 0.0
     for f in input_list:

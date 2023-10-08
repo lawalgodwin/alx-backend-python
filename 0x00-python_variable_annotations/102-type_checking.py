@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Add the correct typings to the function below"""
 
 from typing import Union, List

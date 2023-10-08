@@ -8,10 +8,10 @@ def safe_first_element(lst):
     else:
         return None
 """
-from typing import Any, Union, Sequence, Optional
+from typing import Any, Union, Sequence
 
 
-def safe_first_element(lst: Optional[Sequence[Any]]) -> Union[Any, None]:
+def safe_first_element(lst: Sequence[Any]) -> Union[Any, None]:
     if lst:
         return lst[0]
     else:

@@ -12,6 +12,7 @@ from typing import Any, Union, Sequence
 
 
 def safe_first_element(lst: Sequence[Any]) -> Union[Any, None]:
+    """Correctly Annotated"""
     if lst:
         return lst[0]
     else:

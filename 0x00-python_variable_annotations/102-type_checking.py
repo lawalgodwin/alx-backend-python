@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Add the correct typings to the function below"""
 
-from typing import Union, List
+from typing import Tuple, Union, List
 
 
-def zoom_array(lst: List[int], factor: Union[int, float] = 2) -> List[int]:
+def zoom_array(lst: Tuple, factor: int = 2) -> List:
     """A function that returns a list"""
-    zoomed_in: List[int] = [
+    zoomed_in: List = [
         item for item in lst
         for i in range(int(factor))
     ]

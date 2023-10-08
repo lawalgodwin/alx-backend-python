@@ -4,7 +4,7 @@
 from typing import Union, List
 
 
-def zoom_array(lst: List[int], factor: int = 2) -> List:
+def zoom_array(lst: List[int], factor: Union[int, float] = 2) -> List[int]:
     """A function that returns a list"""
     zoomed_in: List[int] = [
         item for item in lst

@@ -14,10 +14,10 @@ import asyncio
 wait_random = __import__('0-basic_async_syntax').wait_random
 
 
-async def wait_n(n: int, max_delay: int) -> List:
+async def wait_n(n: int, max_delay: int) -> List[float]:
     """execute multiple coroutines at the same time with async"""
     # create a list of the coroutines
-    tasks = [asyncio.create_task(wait_random(max_delay)) for _ in range(0, n)]
+    tasks = [asyncio.create_task(wait_random(max_delay)) for _ in range(n)]
     # return a list of the ruturns of each coroutines in the order they are
     # completed
     return [await task for task in asyncio.as_completed(tasks)]

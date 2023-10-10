@@ -6,10 +6,10 @@ Use the random module.
 """
 import asyncio
 from random import uniform
-from typing import AsyncIterator
+from typing import Generator
 
 
-async def async_generator() -> AsyncIterator[float]:
+async def async_generator() -> Generator[float, None, None]:
     """yeild 10 rand numbers btw 0 & 10 at an interval of 1sec for each"""
     for _ in range(10):
         await asyncio.sleep(1)

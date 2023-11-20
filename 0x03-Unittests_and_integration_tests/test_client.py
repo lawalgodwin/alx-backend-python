@@ -15,7 +15,7 @@ class TestGithubOrgClient(unittest.TestCase):
     ])
     @patch('client.get_json')
     def test_org(self, org_name: str, mock_get_json: MagicMock):
-        """test that the GithubOrgClient.org returns the correct value"""
+        """test that the GithubOrgClient.org returns the correct value """
         spec = GithubOrgClient(org_name)
         org_url = 'https://api.github.com/orgs/{}'.format(org_name)
         spec.org()

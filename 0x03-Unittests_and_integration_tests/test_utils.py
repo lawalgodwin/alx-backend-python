@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Parameterize a unit test"""
 
-from utils import access_nested_map, get_json
+from utils import access_nested_map, get_json, memoize
 import unittest
 from parameterized import parameterized
 from unittest.mock import MagicMock, patch
@@ -46,6 +46,30 @@ class TestGetJson(unittest.TestCase):
             mock_requests_get.return_value = mock_response
             real_response = get_json(test_url)
             self.assertEqual(real_response, test_json_response)
+
+
+class TestMemoize(unittest.TestCase):
+    """Tests for the memoize function in the utils module"""
+    def test_memoize(self):
+        """Test that the memoize function returns expected result"""
+
+        class TestClass:
+            """Test Class"""
+            def a_method(self):
+                """A method that returns 42"""
+                return 42
+
+            @memoize
+            def a_property(self):
+                """Returns memoized property"""
+                return self.a_method()
+
+        with patch("TestClass.a_method") as mock_TestClass_a_method:
+            new_obj = TestClass()
+            mock_TestClass_a_method.return_value = 42
+            new_obj.a_property
+            new_obj.a_property
+            mock_TestClass_a_method.assert_called_once()
 
 
 if __name__ == '__main__':

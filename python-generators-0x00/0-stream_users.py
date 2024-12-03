@@ -16,7 +16,7 @@ def stream_users():
         cursor.execute(QUERY)
         for row in cursor.fetchall():
             user_id, name, email, age = row
-            user = {"user_id": user_id, "name": name, "email": email, "age": age }
+            user = {"user_id": user_id, "name": name, "email": email, "age": int(age) }
             yield user
 
 

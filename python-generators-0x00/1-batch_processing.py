@@ -30,11 +30,11 @@ def stream_users_in_batches(batch_size = 50) -> Generator[int, None, str]:
     return "No more rows to fetch"
 
 
-def batch_processing(batch_size) -> Generator[int, None, None]:
+def batch_processing(batch_size) -> None:
     """ A function that processes each batch to filter users over the age of 25
         Arguments:
             batch_size: the number of batches to be processed
-        Returns: Generator
+        Returns: None
     """
     batch = next(stream_users_in_batches(batch_size))
     if not batch:

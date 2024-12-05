@@ -6,9 +6,9 @@
 """
 
 from mysql.connector import Error, connect
-# from seed import connect_to_prodev
+from seed import connect_to_prodev
 
-conn = connect(host="0.0.0.0", user="nedu", password="password", database="ALX_prodev")
+conn = connect_to_prodev()
 
 def stream_users_in_batches(batch_size = 50):
     """ A function that fetches rows in batches
@@ -31,6 +31,6 @@ def stream_users_in_batches(batch_size = 50):
 
 if __name__ == "__main__":
     try:
-        print(next(stream_users_in_batches(2)))
+        print(next(stream_users_in_batches(1)))
     except Error as e:
         print(e.value)

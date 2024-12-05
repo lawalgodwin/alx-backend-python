@@ -27,6 +27,8 @@ def stream_users_in_batches(batch_size = 50) -> Generator[int, None, str]:
             break
         yield rows
         rows = cursor.fetchmany(batch_size)
+    cursor.close()
+    conn.close()
     return "No more rows to fetch"
 
 

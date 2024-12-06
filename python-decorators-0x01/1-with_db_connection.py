@@ -10,11 +10,19 @@ import functools
 
 def with_db_connection(func):
     """ A decorator that automatically handles opening and closing database connections """
-    conn = sqlite3.connect('users.db')
     @functools.wraps(func)
-    def wrapper(user_id):
-        func(conn, user_id)
-        conn.close()
+    def wrapper(*args, **kwargs):
+        try:
+            # open connection
+            print("About making connection")
+            conn = sqlite3.connect('users.db')
+            result = func(conn, *args, **kwargs)
+            return result
+        finally:
+            # close connection
+            if conn:
+                conn.close()
+            print("connection clased")
     return wrapper
 
 @with_db_connection 

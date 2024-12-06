@@ -16,22 +16,17 @@ def retry_on_failure(retries=0, delay=0):
         """ A decorator that retries database operations if they fail due to transient errors """
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            result = None
-            try:
-                result = func(*args, **kwargs)
-            except Exception:
-                # retry due to transient error
-                for i in range(retries):
-                    print(f"Retrying......{i + 1}")
-                    try:
-                        result = func(*args, **kwargs)
-                        if (result):
-                            break
-                    except Exception as error:
-                        print("Error occured: ", error)
-                        result = error
-                    time.sleep(delay)
-            return result
+            for attempt in range(1, retries + 1):  # Attempt numbers 1 through retries
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    print(f"Attempt {attempt} failed with error: {e}")
+                    if attempt < retries:
+                        print(f"Retrying in {delay} seconds...")
+                        time.sleep(delay)
+                    else:
+                        print("All retries failed.")
+                        print(f"Error: {e}")
         return wrapper
     return decorator
 

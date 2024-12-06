@@ -27,6 +27,7 @@ def retry_on_failure(retries=0, delay=0):
                     else:
                         print("All retries failed.")
                         print(f"Error: {e}")
+                        # raise e # re-raise the exception
         return wrapper
     return decorator
 

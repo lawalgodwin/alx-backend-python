@@ -16,7 +16,7 @@ def create_table():
     """
     connection = sqlite3.connect('users.db')
     sqlite_create_table_query = '''CREATE TABLE IF NOT EXISTS users (
-                                user_id INTEGER PRIMARY KEY,
+                                id INTEGER PRIMARY KEY,
                                 name TEXT NOT NULL,
                                 email TEXT NOT NULL UNIQUE,
                                 joining_date DATETIME,

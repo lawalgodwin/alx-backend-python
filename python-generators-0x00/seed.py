@@ -6,6 +6,7 @@
 
 from mysql.connector import connect
 from mysql.connector import MySQLConnection, Error
+from uuid import uuid4
 import csv
 
 
@@ -89,14 +90,14 @@ def insert_data(connection: MySQLConnection, data):
                 if row_number == 0:
                     row_number += 1
                     continue
-                # print(f"{str(row[0])}, {str(row[1])}, {str(row[2])}, {row[3]}")
+                user_id = uuid4()
                 INSERT_SCRIPT = f""" INSERT INTO user_data (user_id, name, email, age) 
                                     VALUES 
-                                    ('{row[0]}', '{row[1]}', '{row[2]}', {row[3]}) """
+                                    ('{user_id}', "{row[0]}", "{row[1]}", {int(row[2])}) """
                 try:
                     cursor.execute(INSERT_SCRIPT)
                     connection.commit()
-                    print(f"Sucessfully inserted user {row[0]}")
+                    # print(f"Sucessfully inserted user {user_id}")
                 except Error as e:
                     print("Unable to insert ", e.msg)
 

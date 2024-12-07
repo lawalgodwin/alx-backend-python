@@ -23,7 +23,7 @@ from seed import connect_to_prodev
 conn = connect_to_prodev()
 
 def stream_user_ages() -> Generator:
-    """ This fuction is implemented based on the instruction above"""
+    """ This fuction is implemented based on the instruction above """
     cursor = conn.cursor(dictionary=True)
     QUERY = """ SELECT age FROM user_data; """
     cursor.execute(QUERY)
@@ -45,15 +45,16 @@ def calculate_average_age():
     count = 0
     total_age = 0
     for age in stream_user_ages():
-        print(age)
+        if not age:
+            break
         total_age += age
         count += 1
-        average_age = round((total_age / count), 2)
-        print(f"Average age of users: {average_age}")
+    return round((total_age / count), 2)
 
 
 if __name__ == "__main__":
     try:
-        calculate_average_age()
+        average_age = calculate_average_age()
+        print(f"Average age of users: {average_age}")
     except Error as e:
         print(e.msg)

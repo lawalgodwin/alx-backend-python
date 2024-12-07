@@ -6,6 +6,7 @@
 
 import sqlite3
 import functools
+from datetime import datetime
 
 
 def create_table():
@@ -33,7 +34,7 @@ def log_queries(fn):
     """ A decorator that logs database queries before executing it """
     @functools.wraps(fn)
     def wrapper(query):
-        print(query)
+        print(f"{datetime.now()} : {query}")
         fn(query)
     return wrapper
         

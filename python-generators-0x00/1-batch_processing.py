@@ -44,7 +44,7 @@ def batch_processing(batch_size) -> None:
     users_above_25 =list(filter(lambda row: (int(row["age"]) > 25), batch))
     for user in users_above_25:
         user.update({"age": int(user["age"])})
-        print("\n", user, end="\n\n")
+        print(user)
 
 
 if __name__ == "__main__":

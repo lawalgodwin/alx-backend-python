@@ -28,8 +28,6 @@ def stream_user_ages() -> Generator:
     QUERY = """ SELECT age FROM user_data; """
     cursor.execute(QUERY)
     user = cursor.fetchone()
-    age = 0
-    counter = 0
     while True:
         if not user:
             break

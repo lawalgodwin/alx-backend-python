@@ -33,18 +33,27 @@ def stream_user_ages() -> Generator:
     while True:
         if not user:
             break
-        age += user.get("age")
-        counter += 1
+        age = user.get("age")
         yield age
-        average_age = age / counter
-        print(f"Average age of users: {round(average_age, 2)}")
         user = cursor.fetchone()
 
 
 
+
+def calculate_average_age():
+    """ This fucntion calculates the average age yielded by the generator """
+    count = 0
+    total_age = 0
+    for age in stream_user_ages():
+        print(age)
+        total_age += age
+        count += 1
+        average_age = round((total_age / count), 2)
+        print(f"Average age of users: {average_age}")
+
+
 if __name__ == "__main__":
     try:
-        for age in stream_user_ages():
-            print(age)
+        calculate_average_age()
     except Error as e:
         print(e.msg)

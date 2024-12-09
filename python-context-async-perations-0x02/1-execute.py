@@ -3,7 +3,9 @@
 """ This module creates a reusable context manager that takes a query as input and executes it, managing both connection and the query execution
 """
 
-from mysql.connector import connect, Error
+# from mysql.connector import connect, Error
+import sqlite3
+from sqlite3 import Error
 
 class ExecuteQuery:
     """ A reusable context manager that manages both DB connection and the query execution
@@ -13,8 +15,8 @@ class ExecuteQuery:
         Returns: The query results
     """
 
-    def __init__(self, query="SELECT * FROM user_data WHERE age > %s", params=25):
-        self.connection_object = connect(host='0.0.0.0', user='nedu', password='password', database='ALX_prodev')
+    def __init__(self, query="SELECT * FROM user_data WHERE age > ?", params=25):
+        self.connection_object = sqlite3.connect('users.db')
         self.query = query
         self.param = params
 
@@ -22,10 +24,10 @@ class ExecuteQuery:
         cursor = self.connection_object.cursor()
         result = None
         try:
-            cursor.execute(self.query, params=(self.param,))
+            cursor.execute(self.query, self.param)
             result = cursor.fetchall()
         except Error as e:
-            print(e.msg)
+            print(e.with_traceback(e.__traceback__))
         return result if result else []
 
     def __exit__(self, type, value, stacktrace):
@@ -36,6 +38,6 @@ class ExecuteQuery:
 
 
 if __name__ == "__main__":
-    with ExecuteQuery("SELECT * FROM users WHERE age > %s", 50) as query_result:
+    with ExecuteQuery("SELECT * FROM users WHERE age > ?", 50) as query_result:
         for row in query_result:
             print(row)

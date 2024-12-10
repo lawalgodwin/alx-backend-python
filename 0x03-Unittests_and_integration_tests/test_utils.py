@@ -8,7 +8,7 @@ from utils import access_nested_map
 
 
 class TestAccessNestedMap(unittest.TestCase):
-    """ A test case for the nested_map function  """
+    """ A test case for the util, client and fixtures modules  """
 
     @parameterized.expand([
             ({"a": 1}, ("a",), 1),

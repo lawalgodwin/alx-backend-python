@@ -3,7 +3,7 @@
 
 import unittest
 from unittest import TestCase
-from unittest.mock import patch, PropertyMock
+from unittest.mock import patch, PropertyMock, MagicMock
 from parameterized import parameterized
 from client import GithubOrgClient
 
@@ -39,6 +39,24 @@ class TestGithubOrgClient(TestCase):
             github_org_client = GithubOrgClient(org)
             actual_repos_url = github_org_client._public_repos_url
             self.assertEqual(actual_repos_url, expected_repos_url.get("repos_url"))
+    
+    @patch('client.get_json')
+    def test_public_repos(self, mock_json: MagicMock):
+        """ A unit test for the GithubOrgClient.public_repos """
+        mock_json.return_value = [{"name": "goggle"}, {"name": "abc"}]
+        with patch.object(
+            GithubOrgClient, "_public_repos_url",
+            new_callable=PropertyMock,
+            return_value="Some generic public repos url"
+            ) as mock_public_repos_url:
+
+            github_org_client = GithubOrgClient("test_org_name")
+
+            actual = github_org_client.public_repos()
+            mock_json.assert_called_once()
+            mock_public_repos_url.assert_called_once()
+            expected = ["goggle", "abc"]
+            self.assertEqual(actual, expected)
 
 
 if __name__ == "__main__":

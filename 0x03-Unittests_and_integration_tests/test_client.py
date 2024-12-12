@@ -31,15 +31,21 @@ class TestGithubOrgClient(TestCase):
     @parameterized.expand([
         ("goggle", {"repos_url": "https://api.someurl.com"}),
         ("abc", {"repos_url": "https://api.anotherurl.com"})
-    ])    
+    ])
     def test_public_repos_url(self, org, expected_repos_url):
         """ A unit test for GithubOrgClient._public_repos_url """
-        with patch.object(GithubOrgClient, 'org', new_callable=PropertyMock) as mock_org:
+        with patch.object(
+            GithubOrgClient, 'org',
+            new_callable=PropertyMock
+        ) as mock_org:
             mock_org.return_value = expected_repos_url
             github_org_client = GithubOrgClient(org)
             actual_repos_url = github_org_client._public_repos_url
-            self.assertEqual(actual_repos_url, expected_repos_url.get("repos_url"))
-    
+            self.assertEqual(
+                actual_repos_url,
+                expected_repos_url.get("repos_url")
+            )
+
     @patch('client.get_json')
     def test_public_repos(self, mock_json: MagicMock):
         """ A unit test for the GithubOrgClient.public_repos """
@@ -48,7 +54,7 @@ class TestGithubOrgClient(TestCase):
             GithubOrgClient, "_public_repos_url",
             new_callable=PropertyMock,
             return_value="Some generic public repos url"
-            ) as mock_public_repos_url:
+        ) as mock_public_repos_url:
 
             github_org_client = GithubOrgClient("test_org_name")
 

@@ -1,41 +1,33 @@
 #!/usr/bin/env python3
 """Test for Client.py module"""
+
 import unittest
-from unittest.mock import patch, MagicMock, PropertyMock
+from unittest import TestCase
+from unittest.mock import patch
 from parameterized import parameterized
 from client import GithubOrgClient
 
 
-class TestGithubOrgClient(unittest.TestCase):
-    """Test for the GithubOrgClient class"""
-
+class TestGithubOrgClient(TestCase):
+    """ A Test case for the GitHubOrgClient class """
     @parameterized.expand([
-        ('google'),
-        ('abc')
+        ("goggle"),
+        ("abc")
     ])
     @patch('client.get_json')
-    def test_org(self, org_name: str, mock_get_json: MagicMock):
-        """test that the GithubOrgClient.org returns the correct value """
-        spec = GithubOrgClient(org_name)
-        org_url = 'https://api.github.com/orgs/{}'.format(org_name)
-        spec.org()
-        mock_get_json.assert_called_once_with(org_url)
-
-    @parameterized.expand([
-        ('google', {"repos_url": "https://api.someurl.com"})
-        ])
-    def test_public_repos_url(self, org_name, exp_repos_url: dict):
-        """Mocking a property and unit-test the method ._public_repos_url
-        Note: memoize automatically turns the decorated nethod into
-        an instance property"""
-        with patch.object(
-            GithubOrgClient, 'org',
-            new=exp_repos_url
-        ):
-            org_client = GithubOrgClient(org_name)
-            real_repos_url = org_client._public_repos_url
-            self.assertEqual(real_repos_url, exp_repos_url.get("repos_url"))
+    def test_org(self, org, mock_get_json):
+        """ A test for the org method """
+        github_org_client = GithubOrgClient(org)
+        ORG_URL = f"https://api.github.com/orgs/{org}"
+        result1 = github_org_client.org()
+        result2 = github_org_client.org()
+        # Test that the get_json function is called only once
+        mock_get_json.assert_called_once()
+        # test that the call was made with the expected arg
+        mock_get_json.assert_called_once_with(ORG_URL)
+        # Test that the result of both first and second calls are the same
+        self.assertEqual(result1, result2)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

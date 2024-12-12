@@ -3,7 +3,7 @@
 
 import unittest
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, PropertyMock
 from parameterized import parameterized
 from client import GithubOrgClient
 
@@ -27,6 +27,18 @@ class TestGithubOrgClient(TestCase):
         mock_get_json.assert_called_once_with(ORG_URL)
         # Test that the result of both first and second calls are the same
         self.assertEqual(result1, result2)
+
+    @parameterized.expand([
+        ("goggle", {"repos_url": "https://api.someurl.com"}),
+        ("abc", {"repos_url": "https://api.anotherurl.com"})
+    ])    
+    def test_public_repos_url(self, org, expected_repos_url):
+        """ A unit test for GithubOrgClient._public_repos_url """
+        with patch.object(GithubOrgClient, 'org', new_callable=PropertyMock) as mock_org:
+            mock_org.return_value = expected_repos_url
+            github_org_client = GithubOrgClient(org)
+            actual_repos_url = github_org_client._public_repos_url
+            self.assertEqual(actual_repos_url, expected_repos_url.get("repos_url"))
 
 
 if __name__ == "__main__":

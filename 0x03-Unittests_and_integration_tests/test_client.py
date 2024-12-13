@@ -98,6 +98,8 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         # returns the correct fixtures for the various values of url
         cls.mock_get.return_value.json.side_effect = [
             cls.org_payload,
+            cls.repos_payload,
+            cls.org_payload,
             cls.repos_payload
         ]
 
@@ -112,6 +114,13 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """ An integration test for the GithubOrgClient.public_repos method """
         github_org_client = GithubOrgClient("google")
         self.assertEqual(github_org_client.public_repos(), self.expected_repos)
+        self.mock_get.assert_called()
+
+    def test_public_repos_with_license(self):
+        """Test the public_repos with the argument license='apache-2.0'"""
+        github_org_client = GithubOrgClient('google')
+        actual_repos = github_org_client.public_repos(license='apache-2.0')
+        self.assertEqual(actual_repos, self.apache2_repos)
         self.mock_get.assert_called()
 
 

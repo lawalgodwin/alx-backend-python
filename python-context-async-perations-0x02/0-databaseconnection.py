@@ -24,7 +24,7 @@ class DatabaseConnection:
 if __name__ == "__main__":
     with DatabaseConnection() as connection:
         cursor = connection.cursor()
-        QUERY = """ SELECT * FROM user_data; """
+        QUERY = """ SELECT * FROM users; """
         cursor.execute(QUERY)
         for row in cursor.fetchmany(50):
             print(row)

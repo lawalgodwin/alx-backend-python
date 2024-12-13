@@ -92,7 +92,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             get() method of the requests object in the utils module
         """
         # start the patcher called get_patcher
-        cls.get_patcher = patch('utils.requests.get')
+        cls.get_patcher = patch('requests.get')
         cls.mock_get = cls.get_patcher.start()
         # use side_effect to make sure the mock of requests.get(url).json() -
         # returns the correct fixtures for the various values of url

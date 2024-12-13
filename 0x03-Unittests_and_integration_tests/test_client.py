@@ -4,9 +4,9 @@
 import unittest
 from unittest import TestCase
 from unittest.mock import patch, PropertyMock, MagicMock
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
-from utils import access_nested_map
+from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(TestCase):
@@ -73,6 +73,46 @@ class TestGithubOrgClient(TestCase):
         """ A unit test for the GithubOrgClient.has_license """
         has_licence = GithubOrgClient.has_license(repo, license_key)
         self.assertIs(has_licence, expected)
+
+
+@parameterized_class([
+    {
+        "org_payload": TEST_PAYLOAD[0][0],
+        "repos_payload": TEST_PAYLOAD[0][1],
+        "expected_repos": TEST_PAYLOAD[0][2],
+        "apache2_repos": TEST_PAYLOAD[0][3]
+    }
+])
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """ Integration Test for GithubOrgClient.public_repos method  """
+
+    @classmethod
+    def setUpClass(cls):
+        """ start a patch by calling patch() with a target which is the
+            get() method of the requests object in the utils module
+        """
+        # start the patcher called get_patcher
+        cls.get_patcher = patch('utils.requests.get')
+        cls.mock_get = cls.get_patcher.start()
+        # use side_effect to make sure the mock of requests.get(url).json() -
+        # returns the correct fixtures for the various values of url
+        cls.mock_get.return_value.json.side_effect = [
+            cls.org_payload,
+            cls.repos_payload
+        ]
+
+    @classmethod
+    def tearDownClass(cls):
+        """ A class method that does automatically clean up
+        after all test methods have been executed"""
+        # stop the get_patcher
+        cls.get_patcher.stop()
+
+    def test_public_repos(self):
+        """ An integration test for the GithubOrgClient.public_repos method """
+        github_org_client = GithubOrgClient("google")
+        self.assertEqual(github_org_client.public_repos(), self.expected_repos)
+        self.mock_get.assert_called()
 
 
 if __name__ == "__main__":

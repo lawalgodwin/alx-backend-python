@@ -46,7 +46,7 @@ class Message(models.Model):
     """
     message_id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     sender_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    conversation_id = models.ForeignKey(Conversation, default=None, on_delete=models.CASCADE, related_name="messages")
+    conversation_id = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name="messages")
     message_body = models.TextField()
     sent_at = models.DateTimeField(auto_now_add=True)
 

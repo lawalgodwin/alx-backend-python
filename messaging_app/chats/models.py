@@ -23,8 +23,8 @@ class User(AbstractUser):
     role = models.CharField(choices=Role, default=Role.GUEST, max_length=5)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    username = models.CharField(unique=True, max_length=200, default=email)
-    password = models.CharField(max_length=200, default=password_hash)
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["first_name", "last_name", "password_hash", "phone_number"]
 
 
 class Message(models.Model):

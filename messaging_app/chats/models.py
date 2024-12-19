@@ -26,12 +26,18 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name", "password_hash", "phone_number"]
 
+    def __str__(self):
+        return f"{self.first_name.capitalize()[0]}.{self.last_name.capitalize()[0]} - {self.email}"
+
 
 class Conversation(models.Model):
     """  The conversation model tracks which users are involved in a conversation """
     conversation_id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     participants_id = models.ManyToManyField(User, related_name="conversations")
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Conversation - {self.conversation_id}"
 
 
 class Message(models.Model):
@@ -43,3 +49,6 @@ class Message(models.Model):
     conversation_id = models.ForeignKey(Conversation, default=None, on_delete=models.CASCADE, related_name="messages")
     message_body = models.TextField()
     sent_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.message_body[:15]}..."

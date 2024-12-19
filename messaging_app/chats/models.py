@@ -18,7 +18,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    password_hash = models.CharField(default=None, max_length=100)
+    password_hash = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=15)
     role = models.CharField(choices=Role, default=Role.GUEST, max_length=5)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -38,6 +38,7 @@ class Message(models.Model):
 
 
 class Conversation(models.Model):
+    """  The conversation model tracks which users are involved in a conversation """
     conversation_id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     participants_id = models.ForeignKey(User, related_name="participants", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

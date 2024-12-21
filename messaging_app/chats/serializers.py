@@ -5,6 +5,8 @@ from .models import User, Conversation, Message
 
 class UserSerializer(serializers.ModelSerializer):
     full_name = serializers.CharField(source='get_full_name', read_only=True)
+    username = serializers.CharField(source="get_email", read_only=True)
+    password = serializers.CharField(source="get_password_hash", write_only=True)
 
     class Meta:
         model = User
@@ -15,6 +17,15 @@ class UserSerializer(serializers.ModelSerializer):
         if len(value) < 8:
             raise serializers.ValidationError("Password not long enough")
         return value
+    
+    def save(self, **kwargs):
+        password = self.validated_data["password_hash"]
+        kwargs = self.validated_data
+        email = self.validated_data["email"]
+        account = User(email=email, username=email, **kwargs)
+        account.set_password(password)
+        account.save()
+        return account
 
 
 class MessageSerializer(serializers.ModelSerializer):

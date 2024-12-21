@@ -1,3 +1,14 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from .models import Message, Conversation, User
 
-# Register your models here.
+
+# class CustomUserAdmin(UserAdmin):
+#     model = User
+#     list_display = ["email", "first_name", "last_name"]
+#     ordering = ["email"]
+
+# admin.site.register(User, CustomUserAdmin)
+admin.site.register(User)
+admin.site.register(Conversation)
+admin.site.register(Message)

@@ -1,9 +1,10 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from .custom_user_manager import CustomUserManager
 
 
-class User(AbstractUser):
+class User(AbstractBaseUser, PermissionsMixin):
     """ The user Model an extension of the Abstract user for
         values not defined in the built-in Django User model
     """
@@ -18,16 +19,20 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    password_hash = models.CharField(max_length=100)
+    password_hash = models.CharField(max_length=128, null=True)
     phone_number = models.CharField(max_length=15)
     role = models.CharField(choices=Role, default=Role.GUEST, max_length=5)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    objects = CustomUserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name", "password_hash", "phone_number"]
+    REQUIRED_FIELDS = ["password_hash", "first_name", "last_name", "phone_number"]
 
-    def __str__(self):
-        return f"{self.first_name.capitalize()[0]}.{self.last_name.capitalize()[0]} - {self.email}"
+    def get_password_hash(self):
+        return self.password_hash
 
 
 class Conversation(models.Model):

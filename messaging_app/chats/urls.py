@@ -1,19 +1,24 @@
 from django.urls import path, include
-from rest_framework import routers
+from rest_framework_nested import routers
 from . import views
 
 
 router = routers.DefaultRouter()
 router.register(
-    "conversations",
-    views.ConversationViewSet,
-    basename="conversations"
+    r"conversations",
+    views.ConversationViewSet
 )
 
-router.register(
+conversation_router = routers.NestedDefaultRouter(
+    router,
+    r"conversations",
+    lookup="conversation"
+)
+
+conversation_router.register(
     "messages",
     views.MessageViewSet,
-    basename="messages"
+    basename="conversations-messages"
 )
 
 
@@ -25,7 +30,8 @@ router.register(
 # ]
 
 urlpatterns = [
-    path("", include(router.urls))
+    path(r"", include(router.urls)),
+    path(r"", include(conversation_router.urls))
 ]
 
 # conversation_create = views.ConversationViewSet.as_view({"post": "create"})

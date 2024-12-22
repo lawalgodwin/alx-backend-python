@@ -39,6 +39,15 @@ class MessageSerializer(serializers.ModelSerializer):
 class ConversationSerializer(serializers.ModelSerializer):
     messages = MessageSerializer(many=True, read_only=True)
     latest_message = serializers.SerializerMethodField()
+    initial_message = serializers.ReadOnlyField(source="openning_message")
+    participants_id = serializers.SerializerMethodField()
+
+
+    def get_participants_id(self, obj):
+        """Get the email address instead of the id"""
+        ids = obj.participants_id
+        participants = UserSerializer(ids, many=True).data
+        return [participant.get("email") for participant in participants]
 
     def get_latest_message(self, obj):
         last_message = obj.messages.order_by("-sent_at").first()

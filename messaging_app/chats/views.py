@@ -1,7 +1,11 @@
-from django.shortcuts import get_list_or_404
+from http import HTTPMethod
+# from django.shortcuts import get_list_or_404
+# from django_filters.rest_framework import filters
+from rest_framework import filters
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import status
+from rest_framework.decorators import action
 from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
 
@@ -12,16 +16,25 @@ class ConversationViewSet(viewsets.ModelViewSet):
     """
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
+    filter_backends = [filters.SearchFilter]
+    filterset_fields = ["participants_is__first_name", "participants_is__last_namel"]
     # def list(self, request):
     #     conversations = Conversation.objects.all()
     #     serializer = ConversationSerializer(conversations, many=True)
     #     return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    # def retrieve(self, request, pk=None):
-    #     queryset = Conversation.objects.all()
-    #     conversation = get_list_or_404(queryset, pk=pk)
-    #     serializer = ConversationSerializer(conversation)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def filter_queryset(self, queryset):
+        return super().get_queryset()
+
+    @action(methods=[HTTPMethod.POST, HTTPMethod.GET], detail=True)    
+    def add_message(self, request, pk=None):
+        conversation = self.get_object()
+        print(conversation)
+        serializer = MessageSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
     
     # def create(self, request):
     #     data = request.data

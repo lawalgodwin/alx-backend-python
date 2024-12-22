@@ -43,6 +43,11 @@ class Conversation(models.Model):
 
     def __str__(self):
         return f"Conversation - {self.conversation_id}"
+    
+    @property
+    def openning_message(self):
+        """ The first message for every conversation """
+        return "Welcome to a new conversation"
 
 
 class Message(models.Model):

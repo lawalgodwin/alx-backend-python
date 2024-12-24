@@ -5,12 +5,13 @@ from .models import User, Conversation, Message
 
 class UserSerializer(serializers.ModelSerializer):
     full_name = serializers.CharField(source='get_full_name', read_only=True)
-    username = serializers.CharField(source="get_email", read_only=True)
+    # username = serializers.CharField(source="get_email", read_only=True)
     password = serializers.CharField(source="get_password_hash", write_only=True)
+    webiners = serializers.PrimaryKeyRelatedField(many=True, queryset=Conversation.objects.all())
 
     class Meta:
         model = User
-        exclude = ("created_at", "password_hash",)
+        fields = ["user_id", "first_name", "last_name", "email", "phone_number", "password", "full_name", "webiners"]
     
     def validate_password_hash(self, value):
         """ Check that the length of the password is at least 8 """
@@ -18,14 +19,14 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Password not long enough")
         return value
     
-    def save(self, **kwargs):
-        password = self.validated_data["password_hash"]
-        kwargs = self.validated_data
-        email = self.validated_data["email"]
-        account = User(email=email, username=email, **kwargs)
-        account.set_password(password)
-        account.save()
-        return account
+    # def save(self, **kwargs):
+    #     password = self.validated_data["password_hash"]
+    #     kwargs = self.validated_data
+    #     email = self.validated_data["email"]
+    #     account = User(email=email, username=email, **kwargs)
+    #     account.set_password(password)
+    #     account.save()
+    #     return account
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -40,7 +41,8 @@ class ConversationSerializer(serializers.ModelSerializer):
     messages = MessageSerializer(many=True, read_only=True)
     latest_message = serializers.SerializerMethodField()
     initial_message = serializers.ReadOnlyField(source="openning_message")
-    participants_id = serializers.SerializerMethodField()
+    # participants_id = serializers.SerializerMethodField()
+    owner = serializers.ReadOnlyField(source="owner.email")
 
 
     def get_participants_id(self, obj):
@@ -52,6 +54,11 @@ class ConversationSerializer(serializers.ModelSerializer):
     def get_latest_message(self, obj):
         last_message = obj.messages.order_by("-sent_at").first()
         return MessageSerializer(last_message).data if last_message else None
+    
+    # def validate_participants_id(self, value):
+    #     if len(value) < 2:
+    #         raise serializers.ValidationError("Participants less than 2")
+    #     return value
 
     class Meta:
         model = Conversation

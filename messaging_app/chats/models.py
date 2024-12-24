@@ -38,8 +38,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Conversation(models.Model):
     """  The conversation model tracks which users are involved in a conversation """
     conversation_id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    participants_id = models.ManyToManyField(User, related_name="conversations")
+    participants_id = models.ManyToManyField(User, related_name="conversations", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(User, related_name="webiners", on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Conversation - {self.conversation_id}"

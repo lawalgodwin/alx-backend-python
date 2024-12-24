@@ -1,7 +1,7 @@
 from http import HTTPMethod
 # from django.shortcuts import get_list_or_404
 # from django_filters.rest_framework import filters
-from rest_framework import filters
+from rest_framework import filters, permissions
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import status
@@ -16,6 +16,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
     """
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
+    permission_class = [permissions.IsAuthenticatedOrReadOnly]
     filter_backends = [filters.SearchFilter]
     filterset_fields = ["participants_is__first_name", "participants_is__last_namel"]
     # def list(self, request):
@@ -35,6 +36,11 @@ class ConversationViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+    
+    def perform_create(self, serializer):
+        # print(serializer)
+        return serializer.save(owner=self.request.user)
+        return super().perform_create(serializer)
     
     # def create(self, request):
     #     data = request.data

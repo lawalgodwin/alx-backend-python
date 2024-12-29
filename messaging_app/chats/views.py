@@ -1,13 +1,12 @@
 from rest_framework import filters
-from http import HTTPMethod
-from rest_framework.permissions import IsAdminUser
-from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
 from .permissions import IsParticipantOfConversation, IsMessageSender
+from .filters import MessageFilter
 
 
 class ConversationViewSet(viewsets.ModelViewSet):
@@ -38,6 +37,8 @@ class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = [IsMessageSender]
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class= MessageFilter
 
     def get_queryset(self):
         """Get only the messages in a conversation a user participates in"""

@@ -109,6 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Permission settings
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
+        'chats.permissions.IsParticipantOfConversation',
         # 'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [

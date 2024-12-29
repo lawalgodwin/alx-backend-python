@@ -44,28 +44,18 @@ class ConversationSerializer(serializers.ModelSerializer):
     messages = MessageSerializer(many=True, read_only=True)
     latest_message = serializers.SerializerMethodField()
     initial_message = serializers.ReadOnlyField(source="openning_message")
-    # participants_id = serializers.SerializerMethodField()
     owner = serializers.ReadOnlyField(source="owner.email")
 
-
-    def get_participants_id(self, obj):
-        """Get the email address instead of the id"""
-        ids = obj.participants_id
-        participants = UserSerializer(ids, many=True).data
-        return [participant.get("email") for participant in participants]
 
     def get_latest_message(self, obj):
         last_message = obj.messages.order_by("-sent_at").first()
         return MessageSerializer(last_message).data if last_message else None
     
-    # def validate_participants_id(self, value):
-    #     if len(value) < 2:
-    #         raise serializers.ValidationError("Participants less than 2")
-    #     return value
 
     class Meta:
         model = Conversation
         fields = "__all__"
+    
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):

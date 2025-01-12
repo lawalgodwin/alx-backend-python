@@ -10,6 +10,21 @@ class Message(models.Model):
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     edited = models.BooleanField(default=False)
+    parent_message = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name="replies")
+
+    def get_threaded_replies(self):
+        """Recursively fetch a message, its replies and replies to the replies"""
+        # fetch immediate replies
+        replies = self.replies.all().select_related("sender", "receiver").prefetch_related("replies")
+        # fetch replies for each reply
+        threaded_replies = []
+        for reply in replies:
+            threaded_replies.append({
+                "message": reply,
+                replies: self.get_threaded_replies()
+            })
+        return threaded_replies
+
 
 
 class Notification(models.Model):

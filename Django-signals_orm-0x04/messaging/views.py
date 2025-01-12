@@ -19,7 +19,7 @@ def threaded_conversation(request):
     """Get a message and its replies including the replies to each reply"""
     # fetch the root messages alone
     root_messages = Message.objects.filter(
-        parent_message=None
+        parent_message=None, sender=request.user
         ).select_related("sender", "receiver").prefetch_related("replies")
     threaded_data = []
     for message in root_messages:

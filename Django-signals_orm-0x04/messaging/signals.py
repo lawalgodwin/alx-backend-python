@@ -1,7 +1,9 @@
 from django.db.models.signals import pre_save, post_save, post_delete
 from django.dispatch import receiver
+from django.contrib.auth import get_user_model
 from .models import Message, Notification, MessageHistory
 
+User = get_user_model()
 
 @receiver(post_save, sender=Message)
 def create_notification(sender, instance: Message, created, **kwargs):
@@ -28,3 +30,11 @@ def log_to_message_edit_history(sender, instance: Message, **kwargs):
             )
         # mark the message as edited
         instance.edited = True
+
+@receiver(post_delete, sender=User)
+def account_post_delete_receiver(sender, instance, **kwargs):
+    """Automatically delete all user-related data after deleting user account"""
+    user_id = instance.pk
+    Message.objects.filter(sender=instance).delete()
+    Notification.objects.filter(user=instance).delete()
+    MessageHistory.objects.filter(message__user=instance).delete()

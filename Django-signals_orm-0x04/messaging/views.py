@@ -32,5 +32,5 @@ def threaded_conversation(request):
 @login_required
 def unread_messages(request):
     """Get all unread messages for the login user"""
-    unread = Message.unread.filter(receiver=request.user)
+    unread = Message.unread.unread_for_user(request.user)
     return JsonResponse(unread, safe=False)

@@ -3,6 +3,6 @@ from .models import Message
 
 
 class UnreadMessagesManager(models.Manager):
-    def get_queryset(self):
-        queryset = super().get_queryset().filter(read=False).only("id", "sender", "timestamp", "content")
-        return queryset
+    def unread_for_user(self, user):
+        
+        return self.filter(receiver=user, read=False).only("id", "sender", "timestamp", "content")

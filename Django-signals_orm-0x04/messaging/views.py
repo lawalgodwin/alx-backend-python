@@ -1,5 +1,6 @@
 from django.shortcuts import render
-
+from rest_framework.decorators import api_view
+from django.views.decorators.cache import cache_page
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
@@ -15,6 +16,8 @@ def delete_user(request, pk):
     return HttpResponse("Account deleted successfully")
 
 @login_required
+@api_view("GET")
+@cache_page(60) # cache the result for 60 seconds
 def threaded_conversation(request):
     """Get a message and its replies including the replies to each reply"""
     # fetch the root messages alone

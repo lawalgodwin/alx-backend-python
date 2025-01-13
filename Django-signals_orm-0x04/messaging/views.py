@@ -28,3 +28,9 @@ def threaded_conversation(request):
             "replies": message.get_threaded_replies()
         })
     return render(request, "threaded_conversation.html", {"messages": threaded_data})
+
+@login_required
+def unread_messages(request):
+    """Get all unread messages for the login user"""
+    unread = Message.unread.filter(receiver=request.user)
+    return JsonResponse(unread, safe=False)

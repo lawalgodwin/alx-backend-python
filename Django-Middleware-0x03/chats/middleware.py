@@ -33,5 +33,4 @@ class RestrictAccessByTimeMiddleware:
             # access denied for access outside 9am - 6pm
             return HttpResponseForbidden("Access denied....Try again between 9am-6pm")
         response = self.get_response(request)
-        pass
         return response

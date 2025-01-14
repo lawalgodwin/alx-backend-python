@@ -1,2 +1,13 @@
+### Login
+POST http://localhost:8000/api/login/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "tester@gmail.com",
+    "password": "password"
+}
+
+### Get conversations
 GET http://localhost:8000/api/conversations HTTP/1.1
 Content-Type: application/json
+Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM2ODc5NzA0LCJpYXQiOjE3MzY4NzYxMDQsImp0aSI6ImNjZWQxYzViZTU4ODQ5MThhZjczZWE5ZWM1NTk2ODc5IiwidXNlcl9pZCI6IjQzYTMxMzJmLTgzOWYtNGQ0MC05NDg1LTczZmE3Y2JjNTZmYiJ9.8aTvI0OdZmN0SpmamWYFZoa8jB5fgNMmj4AQYUWobEg"

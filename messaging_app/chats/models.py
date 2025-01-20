@@ -10,8 +10,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     """
 
     class Role(models.TextChoices):
-        GUEST = "guest"
-        HOST = "host"
+        GUEST = "guest",
+        HOST = "host",
         ADMIN = "admin"
     
    

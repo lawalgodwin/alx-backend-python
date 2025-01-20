@@ -2,10 +2,9 @@ from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
-from rest_framework.decorators import action
 from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
-from .permissions import IsParticipantOfConversation, IsMessageSender
+from .permissions import IsMessageSender
 from .filters import MessageFilter
 
 
@@ -17,7 +16,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
     serializer_class = ConversationSerializer
     filter_backends = [filters.SearchFilter]
     filterset_fields = ["owner__first_name", "owner__last_name"]
-    permission_classes = [IsParticipantOfConversation]
+    # permission_classes = [IsParticipantOfConversation]
 
 
     def get_queryset(self):

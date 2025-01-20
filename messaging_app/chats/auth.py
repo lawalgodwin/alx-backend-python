@@ -1,7 +1,4 @@
-from http import HTTPMethod
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import viewsets, views, status, generics
-from rest_framework.response import Response
+from rest_framework import generics
 from .serializers import UserCreateSerializer
 
 

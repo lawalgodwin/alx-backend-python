@@ -1,0 +1,88 @@
+# Python bytecode files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pyc
+
+# Django migrations
+*/migrations/*
+!*/migrations/__init__.py
+
+# Database files
+*.sqlite3
+
+# Environment variables file
+.env
+
+# Virtual environment directories
+venv/
+env/
+.venv/
+.env/
+
+# IDE/editor specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# macOS specific files
+.DS_Store
+
+# Windows specific files
+Thumbs.db
+Desktop.ini
+
+# Static files (for production, not needed in source control)
+static/
+
+# Media files (if uploaded by the app or for testing, can be ignored)
+media/
+
+# Log files
+*.log
+
+# Django secret key (optional, if stored in a separate file)
+secret_key.txt
+
+# pytest cache
+.pytest_cache/
+
+# Coverage reports
+.coverage
+.coverage.*
+*.hypothesis/
+
+# Django test database files
+db.sqlite3
+
+# Docker related files (optional, depending on usage)
+docker-compose.override.yml
+docker-compose.local.yml
+Dockerfile
+
+# VS Code settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# Local configuration files
+*.local
+
+# Node.js (if you have frontend files like React/Vue)
+node_modules/
+
+# Python package distribution files
+*.egg
+*.egg-info
+dist/
+build/
+
+# Custom Django files you may not want to commit
+*.bak
+*.tmp
+

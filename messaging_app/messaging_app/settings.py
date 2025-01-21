@@ -12,21 +12,28 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import environ
+import os
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-544m^vt69(9*gr8)d&f@%c2al4hcm$&2@i9x(3@f@p=qn@$1vl'
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(env('DJANGO_DEBUG'))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = list(env('DJANGO_ALLOWED_HOSTS'))
 
 
 # Application definition
@@ -80,14 +87,14 @@ WSGI_APPLICATION = 'messaging_app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        # 'NAME': 'messaging_data',
-        # 'ENGINE': 'mysql.connector.django',
-        # 'HOST': '127.0.0.1',
-        # 'PORT': 3306,
-        # 'USER': 'nedu',
-        # 'PASSWORD': 'password',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mysql.connector.django',
+        'NAME': env('MYSQL_DB') or 'messaging_data',
+        'USER': env('MYSQL_USER') or 'nedu',
+        'PASSWORD': env('MYSQL_PASSWORD') or 'password',
+        'HOST': env('MYSQL_DB_HOST') or '127.0.0.1',
+        'PORT': env('MYSQL_DB_PORT') or 3306
     }
 }
 

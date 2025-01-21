@@ -1,0 +1,45 @@
+services:
+  web:
+    build:
+      context: .
+    container_name: web
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    env_file:
+      - path: ./.env
+    environment:
+      - MYSQL_DB_HOST=db
+    ports:
+      - 8000:8000
+    networks:
+      - app
+
+  db:
+    image: mysql
+    restart: always
+    container_name: db
+    volumes:
+      - db-data:/var/lib/mysql
+    env_file:
+      - path: ./.env
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DB}
+      - MYSQL_ROOT_PASSWORD="${MYSQL_PASSWORD}"
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    ports:
+      - :3306
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--host=localhost", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app
+volumes:
+  db-data:
+networks:
+  app:
+    driver: bridge

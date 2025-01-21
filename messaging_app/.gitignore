@@ -14,11 +14,14 @@ __pycache__/
 
 # Environment variables file
 .env
+# Include .env.example file (make sure this is not ignored)
 !.env.local
 
 # Virtual environment directories
 venv/
+env/
 .venv/
+.env/
 
 # IDE/editor specific files
 .vscode/

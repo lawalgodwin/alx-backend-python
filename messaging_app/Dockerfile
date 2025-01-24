@@ -3,8 +3,8 @@
 # Comments are provided throughout this file to help you get started.
 
 
-ARG PYTHON_VERSION=3.10
-FROM python:${PYTHON_VERSION} AS base
+# ARG PYTHON_VERSION=3.10
+FROM python:3.10 AS base
 
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1

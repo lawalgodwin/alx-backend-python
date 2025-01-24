@@ -17,10 +17,10 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # copy requirements.txt to working directory
-COPY Requirements.txt ./
+COPY requirements.txt ./
 
 # Install necessary dependencies from the requirements.txt.
-RUN pip install -r Requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy the source code into the container.
 COPY . .

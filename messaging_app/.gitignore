@@ -64,7 +64,7 @@ db.sqlite3
 # Docker related files (optional, depending on usage)
 docker-compose.override.yml
 docker-compose.local.yml
-Dockerfile
+# Dockerfile
 
 # VS Code settings
 .vscode/

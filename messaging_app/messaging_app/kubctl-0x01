@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# A script that scales the Django App Using Kubernetes
+
+# ensure kubectl command is installed.
+
+(! command -v kubectl) || alias kubectl=minikube kubectl
+
+# Increase the number of replicas to 3 of your Django app deployment
+kubectl scale --replicas=3 deployment/messaging-app-deployment
+
+# Verify that multiple pods are running.
+number_of_pods=$(kubectl get pods --selector app=messaging-app,tier=backend --no-headers | wc -l)
+echo "number of pods: ${number_of_pods}"
+

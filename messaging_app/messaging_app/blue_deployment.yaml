@@ -21,7 +21,7 @@ spec:
         version: blue
     spec:
       containers:
-      - image: godwindockerid/messaging_app
+      - image: godwindockerid/messaging_app # a change of this image version can trigger a rolling update
         name: messaging-app
         env:
           - name: MYSQL_PASSWORD

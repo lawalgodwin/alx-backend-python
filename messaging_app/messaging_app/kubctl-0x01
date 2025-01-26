@@ -2,6 +2,9 @@
 
 # A script that scales the Django App Using Kubernetes
 
+# Exit script on any error
+set -e
+
 # ensure kubectl command is installed.
 
 (! command -v kubectl) || alias kubectl=minikube kubectl
@@ -12,4 +15,14 @@ kubectl scale deployment messaging-app-deployment --replicas=3
 # Verify that multiple pods are running.
 number_of_pods=$(kubectl get pods --selector app=messaging-app,tier=backend --no-headers | wc -l)
 echo "number of pods: ${number_of_pods}"
+
+# Perform load testing on your app using wrk to see how the scaled app handles traffic
+
+node_ip=$(minikube ip)
+node_port=$(kubectl get svc messaging-app-service -o=jsonpath='{.spec.ports[0].nodePort}')
+wrk -t4 -c100 -d30s "http://$node_ip:$node_port"
+
+# Monitor resource usage | Metrics API must be configured to successfully run this command
+echo "Monitoring resource usage..."
+kubectl top pods
 

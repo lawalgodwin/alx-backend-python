@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database
+  labels:
+    app: messaging-app
+    tier: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: messaging-app
+      tier: database
+  template:
+    metadata:
+      name: mysql-pod
+      labels:
+        app: messaging-app
+        tier: database
+    spec:
+      containers:
+      - image: mysql
+        name: mysql
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: password
+          - name: MYSQL_DATABASE
+            value: messaging-app-db
+          - name: MYSQL_USER
+            value: app-user
+          - name: MYSQL_PASSWORD
+            value: password
+        ports:
+          - containerPort: 3306
+
+# Expose the database pod to the application pod via service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  selector:
+    app: messaging-app
+    tier: database
+  ports:
+    - port: 3306
+      protocol: TCP
+      targetPort: 3306

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: messaging-app
+    tier: backend
+    version: green
+  name: messaging-app-green
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: messaging-app
+      tier: backend
+      version: green
+  template:
+    metadata:
+      labels:
+        app: messaging-app
+        tier: backend
+        version: green
+    spec:
+      containers:
+      - image: godwindockerid/messaging_app
+        name: messaging-app
+        env:
+          - name: MYSQL_PASSWORD
+            value: password
+          - name: MYSQL_DB
+            value: messaging-app-db
+          - name: MYSQL_DB_HOST
+            value: mysql-service
+          - name: MYSQL_USER
+            value: app-user
+          - name: MYSQL_DB_PORT
+            value: "3306"
+          - name: DJANGO_DEBUG
+            value: "True"
+          - name: DJANGO_ALLOWED_HOSTS
+            value: "localhost,127.0.0.1,0.0.0.0,*"
+          - name: DJANGO_SECRET_KEY
+            value: 'django-insecure-544m^vt69(9*gr8)d&f@%c2al4hcm$&2@i9x(3@f@p=qn@$1vl'
+        ports:
+          - containerPort: 8000

@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# A script that that deploys the blue and green version, and checks for errors in the new version
+
+# Exit script on any error
+set -e
+
+BLUE_DEPLOYMENT="blue_deployment.yaml"
+GREEN_DEPLOYMENT="green_deployment.yaml"
+SERVICE_FILE="kubeservice.yaml"
+NAMESPACE="default"
+
+# Deploy the Blue version if not already deployed
+echo "Deploying Blue version..."
+kubectl apply -f $BLUE_DEPLOYMENT
+echo "Blue version deployed."
+
+# Deploy the Green version
+echo "Deploying Green version..."
+kubectl apply -f $GREEN_DEPLOYMENT
+echo "Green version deployed."
+
+# Switch the Service to point to the Green version
+echo "Switching Service to Green version..."
+kubectl apply -f $SERVICE_FILE
+echo "Service switched to Green version."
+
+# Check the logs of the Green version for errors
+echo "Checking logs for Green version..."
+# Get the pod name with a label selector (you can adjust this to match your pod)
+POD_NAME=$(kubectl get pods -n "$NAMESPACE" -l tier=backend,version=green -o jsonpath='{.items[0].metadata.name}')
+kubectl logs -n "$NAMESPACE $POD_NAME" | tail -n 20  # Show last 20 lines of logs
+
+echo "Monitoring completed."

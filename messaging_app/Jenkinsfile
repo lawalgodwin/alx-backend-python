@@ -5,7 +5,7 @@ pipeline {
         stage("Pull code from GitHub") {
             steps {
                 sh 'python3 -m venv venv && cd venv && chmod +x bin/activate && ./bin/activate'
-                git branch: 'main', credentialsId: 'GitHub_Cred', url: 'https://github.com/lawalgodwin/alx-backend-python.git'
+                git branch: 'main', credentialsId: 'GitHub_Cred', url: 'https://github.com/lawalgodwin/alx-backend-python'
             }
         }
         stage("install dependencies") {

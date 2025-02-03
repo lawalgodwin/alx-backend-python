@@ -10,7 +10,8 @@ pipeline {
         }
         stage("install dependencies") {
             steps {
-                sh 'cd messaging_app && ls -l && python3 -m pip install -r requirements.txt'
+                sh 'cd messaging_app && ls -l && python3 -m pip install django'
+                // sh 'cd messaging_app && ls -l && python3 -m pip install -r requirements.txt'
             }
         }
         stage("Test") {

@@ -36,7 +36,9 @@ pipeline {
         stage("Build") {
             steps {
                 dir("messaging_app/messaging_app") {
-                    sh "docker build -t godwindockerid/message_app:${BUILD_NUMBER} ."
+                    script {
+                        sh "docker build -t godwindockerid/message_app:${BUILD_NUMBER} ."
+                    }
                 }
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                     sh "docker login -u ${USERNAME} -p ${PASSWORD}"

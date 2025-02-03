@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        dockerImage = ''
-    }
     stages {
         stage("Pull code from GitHub") {
             steps {
@@ -39,7 +36,7 @@ pipeline {
             steps {
                 dir("messaging_app/messaging_app") {
                     script {
-                        dockerImage = docker.build("godwindockerid/message_app:${env.BUILD_NUMBER}")
+                        docker.build("godwindockerid/message_app:${env.BUILD_NUMBER}")
                     }
                 }
             }

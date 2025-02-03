@@ -8,10 +8,14 @@ pipeline {
             }
         }
         stage("install dependencies") {
+            steps {
                 sh 'pip install -r requirements.txt'
+            }
         }
         stage("Test") {
-            sh 'pytest'
+            steps {
+                sh 'pytest'
+            }
         }
     }
     

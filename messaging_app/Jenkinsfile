@@ -1,0 +1,11 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("Pull code from GitHub") {
+            steps {
+                git branch: 'main', credentialsId: 'GitHub_Cred', url: 'https://github.com/lawalgodwin/alx-backend-python.git'
+            }
+        }
+    }
+}

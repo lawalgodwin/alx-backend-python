@@ -6,12 +6,11 @@ pipeline {
             steps {
                 sh 'python3 -m venv venv && cd venv && chmod +x bin/activate && ./bin/activate'
                 git branch: 'main', credentialsId: 'GitHub_Cred', url: 'https://github.com/lawalgodwin/alx-backend-python.git'
-                sh 'ls -l'
             }
         }
         stage("install dependencies") {
             steps {
-                sh 'cd messaging_app && pip3 install -r requirements.txt'
+                sh 'cd messaging_app && ls -l && pip3 install -r requirements.txt'
             }
         }
         stage("Test") {

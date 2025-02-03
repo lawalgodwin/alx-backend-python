@@ -16,6 +16,7 @@ pipeline {
                         rm -rf venv
                         python3 -m venv venv
                         bash -c "source venv/bin/activate"
+                        bash -c "apt install python3-dev default-libmysqlclient-dev build-essential"
                         venv/bin/pip install -r requirements.txt
                     '''
                 }

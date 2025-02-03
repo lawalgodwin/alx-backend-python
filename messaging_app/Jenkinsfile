@@ -11,8 +11,14 @@ pipeline {
         }
         stage("install dependencies") {
             steps {
-                sh 'cd messaging_app && pip freeze'
-                // sh 'cd messaging_app && ls -l && python3 -m pip install -r requirements.txt'
+                dir('messaging_app') {
+                    sh '''
+                        rm -rf venv
+                        python3 -m venv venv
+                        bash -c "source venv/bin/activate"
+                        venv/bin/pip install -r requirements.txt
+                    '''
+                }
             }
         }
         // stage("Test") {

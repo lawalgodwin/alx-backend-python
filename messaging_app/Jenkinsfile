@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    environment {
+        dockerImage = ''
+    }
     stages {
         stage("Pull code from GitHub") {
             steps {
@@ -36,7 +38,7 @@ pipeline {
         stage("Build image") {
             steps {
                 dir("messaging_app/messaging_app") {
-                    sh "docker build -t godwindockerid/message_app:${BUILD_NUMBER} ."
+                    dockerImage = docker.build("godwindockerid/message_app:${env.BUILD_NUMBER}")
                 }
             }
         }
@@ -44,7 +46,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                     sh "docker login -u ${USERNAME} -p ${PASSWORD}"
-                    sh "docker push godwindockerid/message_app:${BUILD_NUMBER}"
+                    sh "docker push godwindockerid/message_app:${env.BUILD_NUMBER}"
                 }
             }
         }        

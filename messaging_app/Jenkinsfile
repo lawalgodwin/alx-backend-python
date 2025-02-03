@@ -13,11 +13,11 @@ pipeline {
         stage("Test") {
             sh 'pytest'
         }
-
-        post {
-            always {
-                sh 'pytest --cov'
-            }
+    }
+    
+    post {
+        always {
+            sh 'pytest --cov'
         }
     }
 }

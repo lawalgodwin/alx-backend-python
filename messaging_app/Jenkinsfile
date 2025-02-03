@@ -38,7 +38,9 @@ pipeline {
         stage("Build image") {
             steps {
                 dir("messaging_app/messaging_app") {
-                    dockerImage = docker.build("godwindockerid/message_app:${env.BUILD_NUMBER}")
+                    script {
+                        dockerImage = docker.build("godwindockerid/message_app:${env.BUILD_NUMBER}")
+                    }
                 }
             }
         }

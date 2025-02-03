@@ -33,7 +33,7 @@ pipeline {
                 }
             }
         }
-        stage("Build app image") {
+        stage("Build") {
             steps {
                 dir("messaging_app/messaging_app") {
                     sh "docker build -t godwindockerid/message_app:${BUILD_NUMBER} ."

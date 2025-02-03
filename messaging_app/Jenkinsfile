@@ -33,13 +33,15 @@ pipeline {
                 }
             }
         }
-        stage("Build") {
+        stage("Build image") {
             steps {
                 dir("messaging_app/messaging_app") {
-                    script {
-                        sh "docker build -t godwindockerid/message_app:${BUILD_NUMBER} ."
-                    }
+                    sh "docker build -t godwindockerid/message_app:${BUILD_NUMBER} ."
                 }
+            }
+        }
+        stage("Push image to dockerhub") {
+            steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                     sh "docker login -u ${USERNAME} -p ${PASSWORD}"
                     sh "docker push godwindockerid/message_app:${BUILD_NUMBER}"

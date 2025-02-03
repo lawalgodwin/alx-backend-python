@@ -13,7 +13,7 @@ __pycache__/
 *.sqlite3
 
 # Environment variables file
-.env
+# .env
 # Include .env.example file (make sure this is not ignored)
 !.env.local
 

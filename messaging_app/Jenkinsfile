@@ -37,7 +37,12 @@ pipeline {
     
     post {
         always {
-            echo 'pytest --cov'
+            dir("messaging_app") {
+                sh '''
+                    bash -c "source venv/bin/activate"
+                    venv/bin/pytest --cov
+                '''
+            }
         }
     }
 }

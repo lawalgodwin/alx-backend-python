@@ -7,5 +7,17 @@ pipeline {
                 git branch: 'main', credentialsId: 'GitHub_Cred', url: 'https://github.com/lawalgodwin/alx-backend-python.git'
             }
         }
+        stage("install dependencies") {
+                sh 'pip install -r requirements.txt'
+        }
+        stage("Test") {
+            sh 'pytest'
+        }
+
+        post {
+            always {
+                sh 'pytest --cov'
+            }
+        }
     }
 }

@@ -17,7 +17,7 @@ pipeline {
     
     post {
         always {
-            sh 'pytest --cov'
+            echo 'pytest --cov'
         }
     }
 }

@@ -28,7 +28,7 @@ pipeline {
                 dir("messaging_app") {
                     sh '''
                         bash -c "source venv/bin/activate"
-                        pip freeze
+                        venv/bin/pytest
                     '''
                 }
             }

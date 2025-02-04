@@ -43,12 +43,14 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
       run: |
+        cd messaging_app
         python3 -m venv venv
         source venv/bin/activate
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run Migrations
       run: |
+        cd messaging_app
         source venv/bin/activate
         python manage.py makemigrations
         python manage.py migrate

@@ -44,7 +44,7 @@ pipeline {
         stage("Push image to dockerhub") {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-                    sh "docker login -u ${USERNAME} -p ${PASSWORD}"
+                    sh "echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin"
                     sh "docker push godwindockerid/message_app:${env.BUILD_NUMBER}"
                 }
             }

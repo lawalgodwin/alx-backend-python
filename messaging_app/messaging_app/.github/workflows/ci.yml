@@ -58,7 +58,7 @@ jobs:
       run: |
         cd messaging_app
         source venv/bin/activate
-        pytest --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+        pytest --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html
     - name: Publish test coverage report
       uses: actions/upload-artifact@v4
       with:

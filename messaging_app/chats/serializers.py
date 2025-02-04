@@ -13,13 +13,13 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["user_id", "first_name", "last_name", "email", "phone_number", "password_hash", "password", "full_name", "webiners"]
-    
+
     def validate_password_hash(self, value):
         """ Check that the length of the password is at least 8 """
         if len(value) < 8:
             raise serializers.ValidationError("Password not long enough")
         return value
-    
+
     def create(self, **kwargs):
         password = self.validated_data["password_hash"]
         kwargs = self.validated_data
@@ -33,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
 class MessageSerializer(serializers.ModelSerializer):
     sender_id = serializers.CharField(source="sender_id.email", read_only=True)
     conversation_id = serializers.PrimaryKeyRelatedField(read_only=True)
-    
+
     class Meta:
         model = Message
         fields = "__all__"
@@ -50,12 +50,10 @@ class ConversationSerializer(serializers.ModelSerializer):
     def get_latest_message(self, obj):
         last_message = obj.messages.order_by("-sent_at").first()
         return MessageSerializer(last_message).data if last_message else None
-    
 
     class Meta:
         model = Conversation
         fields = "__all__"
-    
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -75,6 +73,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("email", "password_hash", "first_name", "last_name", "phone_number")
-   
+
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)

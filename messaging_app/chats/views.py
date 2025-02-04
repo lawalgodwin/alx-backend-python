@@ -18,16 +18,15 @@ class ConversationViewSet(viewsets.ModelViewSet):
     filterset_fields = ["owner__first_name", "owner__last_name"]
     # permission_classes = [IsParticipantOfConversation]
 
-
     def get_queryset(self):
         """Get only the conversations the user participates in"""
         qs = super().get_queryset()
         return qs.filter(participants_id=self.request.user)
 
-    
     def perform_create(self, serializer):
         # print(serializer)
         serializer.save(owner=self.request.user)
+
 
 class MessageViewSet(viewsets.ModelViewSet):
     """ A viewset for listing and performing CRUD operation
@@ -37,7 +36,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
     permission_classes = [IsMessageSender]
     filter_backends = (DjangoFilterBackend,)
-    filterset_class= MessageFilter
+    filterset_class = MessageFilter
 
     def get_queryset(self):
         """Get only the messages in a conversation a user participates in"""
@@ -47,4 +46,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         conversation_id = self.kwargs["conversation_pk"]
         conversation = get_object_or_404(Conversation, pk=conversation_id)
-        serializer.save(sender_id=self.request.user, conversation_id=conversation)
+        serializer.save(
+            sender_id=self.request.user,
+            conversation_id=conversation
+        )

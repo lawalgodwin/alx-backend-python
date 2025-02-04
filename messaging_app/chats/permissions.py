@@ -8,7 +8,7 @@ class IsParticipantOfConversation(BasePermission):
     def has_permission(self, request, view):
         """Ensure the user is authenticated"""
         return request.user.is_authenticated
-    
+
     def has_object_permission(self, request, view, conversation):
         """Ensure the user has CRUD privileges on its conversations"""
         participants = conversation.participants_id.all()
@@ -20,7 +20,7 @@ class IsMessageSender(BasePermission):
     """Only message sender can delete message"""
     def has_permission(self, request, view):
         return request.user.is_authenticated
-    
+
     def has_object_permission(self, request, view, obj):
         if (request.method in SAFE_METHODS):
             return True

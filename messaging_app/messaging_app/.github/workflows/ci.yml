@@ -43,4 +43,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: test-results
-        path: test-results.html
+        path: junit/test-results.html

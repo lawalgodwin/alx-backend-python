@@ -26,7 +26,6 @@ jobs:
         source venv/bin/activate
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        ls -l
     - name: Run Tests'
       env:
         DJANGO_SECRET_KEY: 69tgugtg%^fgJO&*&
@@ -38,4 +37,6 @@ jobs:
         DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,[::1],*
         DJANGO_DEBUG: False
       run: |
-        ls -l
+        cd messaging_app
+        source venv/bin/activate
+        pytest --cov

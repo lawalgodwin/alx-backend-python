@@ -26,7 +26,7 @@ jobs:
         source venv/bin/activate
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Run Tests'
+    - name: Run Tests and generate report
       env:
         DJANGO_SECRET_KEY: 69tgugtg%^fgJO&*&
         MYSQL_DB: mydb
@@ -39,4 +39,9 @@ jobs:
       run: |
         cd messaging_app
         source venv/bin/activate
-        pytest --cov
+        pytest --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+    - name: Publish test coverage report
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: test-results.html

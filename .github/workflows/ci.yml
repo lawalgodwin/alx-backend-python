@@ -10,7 +10,7 @@ env:
   MYSQL_DB: mydb
   MYSQL_USER: userdb
   MYSQL_PASSWORD: password
-  MYSQL_DB_HOST: mysql
+  MYSQL_DB_HOST: localhost
   MYSQL_DB_PORT: 3306
   DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,[::1],*
   DJANGO_DEBUG: False

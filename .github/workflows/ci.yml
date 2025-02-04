@@ -37,4 +37,4 @@ jobs:
         DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,[::1],*
         DJANGO_DEBUG: False
       run: |
-        echo "done"
+        ls -l
